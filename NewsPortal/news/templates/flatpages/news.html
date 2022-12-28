@@ -1,0 +1,30 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Posts
+{% endblock title %}
+{% block content %}
+    <h1>Список новостей ({{ news|length }})</h1>
+    <hr>
+    {% if news %}
+        <table style="margin-left: auto; margin-right: auto;">
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Текст</td>
+            </tr>
+            {% for new in news %}
+            <tr>
+                <td>{{ new.title|censor }}</td>
+                <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
+                <td>{{ new.text|truncatechars:20|censor }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>Новостей нет!</h2>
+    {% endif %}
+{% endblock content %}

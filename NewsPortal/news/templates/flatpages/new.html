@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+<h1>Новость {{ new }}</h1>
+<tr>
+    <td>Заголовок</td>
+    <p>{{ new.title|censor }}</p>
+    <td>Дата публикации</td>
+    <p>{{ new.dateCreation|date:'d M Y H:i' }}</p>
+    <td>Текст</td>
+    <p>{{ new.text|censor }}</p>
+</tr>
+{% endblock content %}
