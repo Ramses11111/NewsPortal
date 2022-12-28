@@ -70,4 +70,4 @@ a.preview()
 
 Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
 a.id
-Comment.objects.filter(commentPost__id=2).order_by().values('dateCreation', 'commentUser__username', 'rating', 'text')
+Comment.objects.filter(commentPost=2).order_by().values('dateCreation', 'commentUser__username', 'rating', 'text')
