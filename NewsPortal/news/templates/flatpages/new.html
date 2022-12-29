@@ -8,12 +8,16 @@ Post
 
 {% block content %}
 <h1>Новость {{ new }}</h1>
+<table style="margin-left: auto; margin-right: auto;">
 <tr>
     <td>Заголовок</td>
-    <p>{{ new.title|censor }}</p>
     <td>Дата публикации</td>
-    <p>{{ new.dateCreation|date:'d M Y H:i' }}</p>
     <td>Текст</td>
-    <p>{{ new.text|censor }}</p>
 </tr>
+<tr>
+    <td>{{ new.title|censor }}</td>
+    <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
+    <td>{{ new.text|censor }}</td>
+</tr>
+</table>
 {% endblock content %}

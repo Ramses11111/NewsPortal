@@ -26,9 +26,6 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
-    def __str__(self):
-        return '{}'.format(self.name)
-
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -47,7 +44,7 @@ class Post(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def __str__(self):
-        return '{}'.format(self.category_type)
+        return '{}'.format(self.pk)
 
     def like(self):
         self.rating += 1
