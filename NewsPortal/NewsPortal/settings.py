@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
 
     'news',
+    'django_filters',
 ]
 
 SITE_ID = 1
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'NewsPortal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'news/templates/flatpages')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
