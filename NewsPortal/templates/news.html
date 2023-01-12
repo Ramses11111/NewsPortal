@@ -6,8 +6,14 @@
 Posts
 {% endblock title %}
 {% block content %}
-    <h1>Список новостей</h1>
+    <h1>Список новостей ({{ news|length }})</h1>
     <hr>
+    {% if perms.news.add_post %}
+    <a href="{% url 'news create' %}">Добавить новость</a>
+    {% endif %}
+    {% if perms.news.add_post %}
+    <a href="{% url 'articles create' %}">Добавить статью</a>
+    {% endif %}
     {% if news %}
         <table style="margin-left: auto; margin-right: auto;">
             <tr>
@@ -16,6 +22,9 @@ Posts
                 <td>Категория</td>
                 <td>Дата публикации</td>
                 <td>Текст</td>
+                {% if perms.news.change_post or perms.news.delete_post %}
+                <td>Действия</td>
+                {% endif %}
             </tr>
             {% for new in news %}
             <tr>
@@ -24,6 +33,22 @@ Posts
                 <td>{{ new.category_type }}</td>
                 <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
                 <td>{{ new.text|truncatechars:20|censor }}</td>
+                <td>
+                    {% if perms.news.change_post %}
+                        {% if new.category_type == 'NW' %}
+                            <a href="{% url 'news update' pk=new.id %}">Изменить</a>
+                        {% else %}
+                            <a href="{% url 'articles update' new.id %}">Изменить</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if perms.news.delete_post %}
+                        {% if new.category_type == 'NW' %}
+                            <a href="{% url 'news delete' pk=new.id %}">Удалить</a>
+                        {% else %}
+                            <a href="{% url 'articles delete' pk=new.id %}">Удалить</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
 
