@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
 
-    'news',
+    'news.apps.NewsConfig',
     'django_filters',
 
     'allauth',
@@ -78,6 +78,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'NewsPortal.wsgi.application'
@@ -141,10 +146,7 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = '/news/'
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
+
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -165,3 +167,9 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "example@yandex.ru"
 
 SERVER_EMAIL = "example@yandex.ru"
+
+SITE_URL = "http://127.0.0.1:8000"
+
+ADMINS = (
+    ('roman', 'ramses11111@mail.ru'),
+)

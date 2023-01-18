@@ -7,6 +7,7 @@ Posts
 {% endblock title %}
 {% block content %}
     <h1>Список новостей ({{ news|length }})</h1>
+    <h><a href="{% url 'subscriptions' %}">Подписаться на категории</a></h>
     <hr>
     {% if perms.news.add_post %}
     <a href="{% url 'news create' %}">Добавить новость</a>
@@ -19,6 +20,7 @@ Posts
             <tr>
                 <td>Номер</td>
                 <td>Заголовок</td>
+                <td>Тип</td>
                 <td>Категория</td>
                 <td>Дата публикации</td>
                 <td>Текст</td>
@@ -28,9 +30,14 @@ Posts
             </tr>
             {% for new in news %}
             <tr>
-                <td>{{ new.id }}</td>
-                <td>{{ new.title|censor }}</td>
-                <td>{{ new.category_type }}</td>
+                <td> {{ new.id }}</td>
+                <td><a href="{% url 'news detail' new.id %}">{{ new.title|censor }}</a></td>
+                <td> {{ new.category_type }}</td>
+                <td>
+                    {% for category in new.postCategory.all %}
+                        {{ category }}
+                    {% endfor %}
+                </td>
                 <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
                 <td>{{ new.text|truncatechars:20|censor }}</td>
                 <td>

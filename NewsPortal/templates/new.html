@@ -12,11 +12,19 @@ Post
 <tr>
     <td>Заголовок</td>
     <td>Дата публикации</td>
+    <td>Тип</td>
+    <td>Категория</td>
     <td>Текст</td>
 </tr>
 <tr>
     <td>{{ new.title|censor }}</td>
     <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
+    <td> {{ new.category_type }}</td>
+    <td>
+        {% for category in new.postCategory.all %}
+            {{ category }}
+        {% endfor %}
+    </td>
     <td>{{ new.text|censor }}</td>
 </tr>
 </table>

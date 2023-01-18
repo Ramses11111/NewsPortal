@@ -26,9 +26,13 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, through='Subscriber')
 
     def __str__(self):
         return self.name
+
+    def get_subscribers(self):
+        return ",\n".join([str(p) for p in self.subscribers.all()])
 
 
 class Post(models.Model):

@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from allauth.account.forms import SignupForm
+from django.core.mail import mail_admins
 
 
 class SignUpForm(UserCreationForm):
@@ -18,3 +20,15 @@ class SignUpForm(UserCreationForm):
             "password1",
             "password2",
         )
+
+
+class CustomSignupForm(SignupForm):
+    def save(self, request):
+        user = super().save(request)
+
+        mail_admins(
+            subject='Новый пользователь!',
+            message=f'Пользователь {user.username} зарегистрировался на сайте.'
+        )
+
+        return user
