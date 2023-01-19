@@ -7,7 +7,7 @@ Posts
 {% endblock title %}
 {% block content %}
     <h1>Список новостей ({{ news|length }})</h1>
-    <h><a href="{% url 'subscriptions' %}">Подписаться на категории</a></h>
+    <h><a href="{% url 'subscriptions' %}">Подписаться на новости</a></h>
     <hr>
     {% if perms.news.add_post %}
     <a href="{% url 'news create' %}">Добавить новость</a>

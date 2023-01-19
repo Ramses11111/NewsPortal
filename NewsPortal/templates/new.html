@@ -19,7 +19,7 @@ Post
 <tr>
     <td>{{ new.title|censor }}</td>
     <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
-    <td> {{ new.category_type }}</td>
+    <td>{{ new.category_type }}</td>
     <td>
         {% for category in new.postCategory.all %}
             {{ category }}

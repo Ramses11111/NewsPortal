@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+
+    'django_apscheduler',
 ]
 
 SITE_ID = 1
@@ -168,8 +170,15 @@ DEFAULT_FROM_EMAIL = "example@yandex.ru"
 
 SERVER_EMAIL = "example@yandex.ru"
 
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
 SITE_URL = "http://127.0.0.1:8000"
 
-ADMINS = (
-    ('roman', 'ramses11111@mail.ru'),
-)
+MANAGERS = [
+    ('Roman', 'ramses11111@mail.ru'),
+]
+
+ADMINS = [
+    ('Roman', 'ramses11111@mail.ru'),
+]
