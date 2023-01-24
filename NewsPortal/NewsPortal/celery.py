@@ -19,6 +19,6 @@ app.conf.beat_schedule = {
 app.conf.beat_schedule = {
     'when_week': {
         'task': 'news.tasks.notify_weekly',
-        'schedule': crontab(minute=15, hour=21, day_of_week='tuesday'),
+        'schedule': crontab(minute=0, hour=8, day_of_week='monday'),
     },
 }
