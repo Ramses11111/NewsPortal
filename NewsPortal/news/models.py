@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 from django.urls import reverse
+from django.core.cache import cache
 
 
 class Author(models.Model):
-    authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
-    ratingAuthor = models.SmallIntegerField(default=0)
+    authorUser = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Авторы")
+    ratingAuthor = models.SmallIntegerField(default=0, verbose_name="Рейтинг автора")
 
     def __str__(self):
         return '{}'.format(self.authorUser)
@@ -25,7 +26,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, verbose_name="Категория")
     subscribers = models.ManyToManyField(User, through='Subscriber')
 
     def __str__(self):
@@ -36,7 +37,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="Авторы")
 
     NEWS = 'NW'
     ARTICLE = 'AR'
@@ -44,18 +45,22 @@ class Post(models.Model):
         (NEWS, 'Новость'),
         (ARTICLE, 'Статья'),
     )
-    category_type = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
-    dateCreation = models.DateTimeField(auto_now_add=True)
+    category_type = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE, verbose_name="Тип")
+    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     postCategory = models.ManyToManyField(Category, through="PostCategory")
     title = models.CharField(max_length=128)
     text = models.TextField()
-    rating = models.SmallIntegerField(default=0)
+    rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
     def __str__(self):
         return '{}'.format(self.pk)
 
     def get_absolute_url(self):
         return reverse('news detail', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
 
     def like(self):
         self.rating += 1

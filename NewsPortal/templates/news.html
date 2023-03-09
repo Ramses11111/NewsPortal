@@ -15,54 +15,57 @@ Posts
     {% if perms.news.add_post %}
     <a href="{% url 'articles create' %}">Добавить статью</a>
     {% endif %}
-    {% if news %}
-        <table style="margin-left: auto; margin-right: auto;">
-            <tr>
-                <td>Номер</td>
-                <td>Заголовок</td>
-                <td>Тип</td>
-                <td>Категория</td>
-                <td>Дата публикации</td>
-                <td>Текст</td>
-                {% if perms.news.change_post or perms.news.delete_post %}
-                <td>Действия</td>
-                {% endif %}
-            </tr>
-            {% for new in news %}
-            <tr>
-                <td> {{ new.id }}</td>
-                <td><a href="{% url 'news detail' new.id %}">{{ new.title|censor }}</a></td>
-                <td> {{ new.category_type }}</td>
-                <td>
-                    {% for category in new.postCategory.all %}
-                        {{ category }}
+    {% load cache %}
+        {% cache 100 post %}
+            {% if news %}
+                <table style="margin-left: auto; margin-right: auto;">
+                    <tr>
+                        <td>Номер</td>
+                        <td>Заголовок</td>
+                        <td>Тип</td>
+                        <td>Категория</td>
+                        <td>Дата публикации</td>
+                        <td>Текст</td>
+                        {% if perms.news.change_post or perms.news.delete_post %}
+                        <td>Действия</td>
+                        {% endif %}
+                    </tr>
+                    {% for new in news %}
+                    <tr>
+                        <td> {{ new.id }}</td>
+                        <td><a href="{% url 'news detail' new.id %}">{{ new.title|censor }}</a></td>
+                        <td> {{ new.category_type }}</td>
+                        <td>
+                            {% for category in new.postCategory.all %}
+                                {{ category }}
+                            {% endfor %}
+                        </td>
+                        <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
+                        <td>{{ new.text|truncatechars:20|censor }}</td>
+                        <td>
+                            {% if perms.news.change_post %}
+                                {% if new.category_type == 'NW' %}
+                                    <a href="{% url 'news update' pk=new.id %}">Изменить</a>
+                                {% else %}
+                                    <a href="{% url 'articles update' new.id %}">Изменить</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if perms.news.delete_post %}
+                                {% if new.category_type == 'NW' %}
+                                    <a href="{% url 'news delete' pk=new.id %}">Удалить</a>
+                                {% else %}
+                                    <a href="{% url 'articles delete' pk=new.id %}">Удалить</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
                     {% endfor %}
-                </td>
-                <td>{{ new.dateCreation|date:'d M Y H:i' }}</td>
-                <td>{{ new.text|truncatechars:20|censor }}</td>
-                <td>
-                    {% if perms.news.change_post %}
-                        {% if new.category_type == 'NW' %}
-                            <a href="{% url 'news update' pk=new.id %}">Изменить</a>
-                        {% else %}
-                            <a href="{% url 'articles update' new.id %}">Изменить</a>
-                        {% endif %}
-                    {% endif %}
-                    {% if perms.news.delete_post %}
-                        {% if new.category_type == 'NW' %}
-                            <a href="{% url 'news delete' pk=new.id %}">Удалить</a>
-                        {% else %}
-                            <a href="{% url 'articles delete' pk=new.id %}">Удалить</a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
 
-        </table>
-    {% else %}
-        <h2>Новостей нет!</h2>
-    {% endif %}
+                </table>
+            {% else %}
+                <h2>Новостей нет!</h2>
+            {% endif %}
+    {% endcache %}
 <!-- {# Добавляем пагинацию на страницу #}-->
 
 <!--   {# Информация о предыдущих страницах #}-->

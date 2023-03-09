@@ -10,6 +10,7 @@ from .models import Post, Subscriber, Category
 from .forms import PostForm
 from .filters import PostFilter
 from .tasks import hello
+from django.core.cache import cache
 
 
 class NewsList(ListView):
@@ -27,6 +28,13 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'new.html'
     context_object_name = 'new'
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class PostSearch(ListView):
